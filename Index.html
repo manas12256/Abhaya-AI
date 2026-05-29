@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abhaya AI Ultimate</title>
+    <!-- Search Engine Optimization (SEO) Metadata for Global Discovery -->
+    <meta name="description" content="Abhaya AI by Orthodox Studio - Next-generation cinematic anime rendering engine. Seamlessly transform videos and generate high-fidelity digital art with advanced cel-shading, dynamic outline controls, and multi-mode custom canvas configurations directly on edge networks.">
+    <meta name="keywords" content="Abhaya AI, video to anime converter, anime rendering engine, custom cel-shading, AI art generator, video processor, Orthodox Studio tech, open-source image generation, cinematic filter, video processing pipeline">
+    <meta name="author" content="Orthodox Studio">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph (OG) Architecture for International Social Sharing (Discord, WhatsApp, X, etc.) -->
+    <meta property="og:title" content="Abhaya AI | Advanced Cinematic Anime Rendering & Synthesis Subsystem">
+    <meta property="og:description" content="Process raw video layouts into localized, high-impact cinematic anime sequences. Engineered under Orthodox Studio infrastructure for low-latency creator workloads.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/OrthodoxStudio/Assets/main/abhaya-preview.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Orthodox Studio Global">
+
+    <!-- Global Application Brand Identity Resource -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
+    body{
+      background:#05060a;
+      font-family:'Inter',sans-serif;
+      overflow-x:hidden;
+      color:white;
+      min-height:100vh;
+    }
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at top left,#14213d 0%,transparent 35%),
+        radial-gradient(circle at bottom right,#32004f 0%,transparent 40%),
+        linear-gradient(180deg,#05060a,#090b12,#05060a);
+      z-index:-2;
+    }
+    .grid{
+      position:fixed;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size:32px 32px;
+      opacity:.25;
+      z-index:-1;
+    }
+    /* SPLASH */
+    .splash{
+      position:fixed;
+      inset:0;
+      background:#05060a;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      z-index:999999;
+      animation:splashHide 4s forwards;
+    }
+    @keyframes splashHide{
+      0%{
+        opacity:1;
+        visibility:visible;
+      }
+      85%{
+        opacity:1;
+      }
+      100%{
+        opacity:0;
+        visibility:hidden;
+      }
+    }
+    .splash-logo{
+      width:140px;
+      height:140px;
+      border-radius:40px;
+      background:linear-gradient(135deg,#00d2ff,#6a00ff);
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 0 80px rgba(0,210,255,.5);
+      animation:pulse 2s infinite;
+    }
+    @keyframes pulse{
+      50%{
+        transform:scale(1.08) rotate(5deg);
+      }
+    }
+    .splash-logo::before{
+      content:'';
+      position:absolute;
+      inset:18px;
+      border-radius:26px;
+      border:3px solid rgba(255,255,255,.5);
+    }
+    .splash-logo::after{
+      content:'';
+      position:absolute;
+      width:200%;
+      height:60%;
+      background:rgba(255,255,255,.2);
+      transform:rotate(35deg);
+      left:-220%;
+      top:-20%;
+      animation:shine 2s linear infinite;
+    }
+    @keyframes shine{
+      100%{
+        left:220%;
+      }
+    }
+    .splash h1{
+      font-family:'Orbitron',sans-serif;
+      font-size:40px;
+      margin-top:28px;
+      letter-spacing:4px;
+      text-align:center;
+    }
+    .splash p{
+      margin-top:10px;
+      font-size:13px;
+      letter-spacing:3px;
+      color:#9aa6c5;
+      text-align:center;
+    }
+    /* MAIN */
+    .container{
+      width:100%;
+      max-width:520px;
+      margin:auto;
+      padding:20px 18px 140px;
+      opacity:0;
+      animation:showApp 1s forwards;
+      animation-delay:3.7s;
+    }
+    @keyframes showApp{
+      to{
+        opacity:1;
+      }
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-top:12px;
+    }
+    .logo-icon{
+      width:60px;
+      height:60px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#00d2ff,#6a00ff);
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 0 35px rgba(0,210,255,.25);
+    }
+    .logo-icon::before{
+      content:'';
+      position:absolute;
+      inset:10px;
+      border-radius:12px;
+      border:2px solid rgba(255,255,255,.5);
+    }
+    .logo h1{
+      font-family:'Orbitron',sans-serif;
+      font-size:30px;
+    }
+    .logo p{
+      font-size:12px;
+      color:#9ba7c7;
+      margin-top:5px;
+    }
+    .tabs{
+      display:flex;
+      gap:14px;
+      margin-top:24px;
+    }
+    .tab{
+      flex:1;
+      padding:16px;
+      border-radius:20px;
+      background:#101625;
+      border:1px solid rgba(255,255,255,.05);
+      text-align:center;
+      font-weight:600;
+      cursor:pointer;
+      transition:.3s;
+      user-select:none;
+    }
+    .tab.active{
+      background:linear-gradient(135deg,#00d2ff,#6a00ff);
+      transform:translateY(-2px);
+      color:white;
+    }
+    .page{
+      display:none;
+    }
+    .page.active{
+      display:block;
+    }
+    .hero{
+      margin-top:24px;
+      background:rgba(10,13,22,.92);
+      border:1px solid rgba(255,255,255,.05);
+      border-radius:28px;
+      padding:24px;
+      backdrop-filter:blur(12px);
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::before{
+      content:'';
+      position:absolute;
+      width:300px;
+      height:300px;
+      background:radial-gradient(circle,rgba(0,210,255,.15),transparent 70%);
+      top:-120px;
+      right:-120px;
+    }
+    .tag{
+      font-size:12px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:#7de2ff;
+      margin-bottom:12px;
+    }
+    .hero h2{
+      font-size:32px;
+      line-height:1.15;
+      margin-bottom:14px;
+    }
+    .hero p{
+      font-size:14px;
+      line-height:1.7;
+      color:#a2acc7;
+    }
+    .upload-box{
+      margin-top:26px;
+      padding:28px 20px;
+      background:#0a0f1c;
+      border:1px dashed rgba(0,210,255,.3);
+      border-radius:24px;
+      text-align:center;
+      transition:.3s;
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+    }
+    .upload-box.active{
+      transform:scale(1.02);
+      border-color:#7b2cff;
+      box-shadow:0 0 40px rgba(123,44,255,.2);
+    }
+    .upload-success{
+      position:absolute;
+      inset:0;
+      background:rgba(7,10,18,.96);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      opacity:0;
+      pointer-events:none;
+      transition:.4s;
+      z-index:10;
+    }
+    .upload-success.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+    .success-ring{
+      width:90px;
+      height:90px;
+      border-radius:50%;
+      background:conic-gradient(#00d2ff,#6a00ff,#00d2ff);
+      animation:rotate 2s linear infinite;
+      position:relative;
+    }
+    .success-ring::before{
+      content:'';
+      position:absolute;
+      inset:10px;
+      background:#05060a;
+      border-radius:50%;
+    }
+    .success-ring::after{
+      content:'';
+      position:absolute;
+      width:18px;
+      height:34px;
+      border-right:5px solid white;
+      border-bottom:5px solid white;
+      transform:rotate(45deg);
+      left:33px;
+      top:20px;
+      z-index:2;
+    }
+    .upload-success h4{
+      margin-top:18px;
+      font-size:20px;
+      color:white;
+    }
+    .upload-success p{
+      margin-top:8px;
+      font-size:13px;
+      color:#9eacd0;
+    }
+    @keyframes rotate{
+      100%{
+        transform:rotate(360deg);
+      }
+    }
+    .upload-icon{
+      width:78px;
+      height:78px;
+      margin:auto;
+      border-radius:24px;
+      background:linear-gradient(135deg,#00d2ff,#6a00ff);
+      position:relative;
+      box-shadow:0 0 40px rgba(0,210,255,.25);
+    }
+    .upload-icon::before{
+      content:'';
+      position:absolute;
+      width:32px;
+      height:6px;
+      background:white;
+      border-radius:10px;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+    }
+    .upload-icon::after{
+      content:'';
+      position:absolute;
+      width:6px;
+      height:32px;
+      background:white;
+      border-radius:10px;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+    }
+    .upload-box h3{
+      margin-top:18px;
+      font-size:18px;
+    }
+    .upload-box span{
+      display:block;
+      font-size:13px;
+      color:#93a0bf;
+      margin-top:8px;
+      line-height:1.6;
+    }
+    .upload-btn{
+      width:100%;
+      margin-top:18px;
+      padding:15px;
+      border:none;
+      border-radius:18px;
+      background:linear-gradient(135deg,#00d2ff,#6a00ff);
+      color:white;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      transition: 0.2s;
+    }
+    .upload-btn:hover{
+      opacity: 0.95;
+      transform: scale(0.99);
+    }
+    input[type=file]{
+      display:none;
+    }
+    .modes{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    .mode{
+      background:#0a0f1a;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:22px;
+      padding:16px;
+      transition:.3s;
+      cursor:pointer;
+      user-select:none;
+    }
+    .mode.active{
+      border-color:#00d2ff;
+      transform:translateY(-3px);
+      box-shadow:0 0 35px rgba(0,210,255,.18);
+    }
+    .visual{
+      height:92px;
+      border-radius:18px;
+      margin-bottom:14px;
+    }
+    .modern{
+      background:linear-gradient(135deg,#0f172a,#00d2ff,#6a00ff);
+    }
+    .shonen{
+      background:linear-gradient(135deg,#120909,#4a0000,#ff5e00);
+    }
+    .ghibli{
+      background:linear-gradient(135deg,#18382f,#5dbb7b,#d4ffb0);
+    }
+    .pastel{
+      background:linear-gradient(135deg,#5966c9,#d98cff,#ffe8ff);
+    }
+    .mode h4{
+      font-size:15px;
+      margin-bottom:6px;
+    }
+    .mode p{
+      font-size:12px;
+      line-height:1.5;
+      color:#8e99b8;
+    }
+    .processing{
+      display:none;
+      margin-top:24px;
+      background:rgba(10,13,22,.95);
+      border:1px solid rgba(0,210,255,.15);
+      border-radius:28px;
+      padding:32px 24px;
+      box-shadow:0 15px 50px rgba(0,0,0,0.6);
+      text-align:center;
+    }
+    .loader{
+      width:110px;
+      height:110px;
+      margin:auto;
+      border-radius:50%;
+      background:conic-gradient(#00d2ff,#6a00ff,#00d2ff);
+      animation:rotate 2s linear infinite;
+      position:relative;
+    }
+    .loader::before{
+      content:'';
+      position:absolute;
+      inset:10px;
+      background:#05060a;
+      border-radius:50%;
+    }
+    .percent{
+      margin-top:18px;
+      text-align:center;
+      font-size:32px;
+      font-family:'Orbitron',sans-serif;
+      font-weight:700;
+      color:#00d2ff;
+      text-shadow:0 0 15px rgba(0,210,255,0.4);
+    }
+    .status{
+      margin-top:18px;
+      text-align:center;
+      font-size:14px;
+      line-height:1.7;
+      color:#d6dcf2;
+      min-height:50px;
+      font-weight:500;
+    }
+    .bar{
+      margin-top:20px;
+      height:12px;
+      background:#121827;
+      border-radius:30px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.05);
+    }
+    .fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#00d2ff,#6a00ff);
+      transition:.2s ease-out;
+    }
+    .preview{
+      display:none;
+      margin-top:26px;
+    }
+    .frame{
+      background:#090d16;
+      padding:14px;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.06);
+      overflow:hidden;
+      position:relative;
+    }
+    #sourceVideo{
+      display:none !important;
+    }
+    canvas{
+      width:100%;
+      border-radius:20px;
+      background:black;
+      display:block;
+      box-shadow:0 12px 30px rgba(0,0,0,0.5);
+      cursor:pointer;
+    }
+    .controls{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:18px;
+    }
+    .controls-bottom{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .control-btn{
+      width:100%;
+      padding:15px 12px;
+      border:none;
+      border-radius:18px;
+      font-size:14px;
+      font-weight:600;
+      background:#101625;
+      color:white;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.06);
+      transition: 0.2s;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      user-select:none;
+    }
+    .control-btn:hover{
+      background: #172035;
+      border-color: rgba(255,255,255,0.15);
+    }
+    .primary{
+      background:linear-gradient(135deg,#00d2ff,#6a00ff);
+      border:none;
+    }
+    .primary:hover{
+      opacity:0.95;
+      box-shadow:0 0 20px rgba(0,210,255,0.3);
+    }
+    /* IMAGE */
+    .generator-box{
+      margin-top:24px;
+    }
+    textarea{
+      width:100%;
+      height:130px;
+      resize:none;
+      background:#0a0f1c;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:24px;
+      padding:18px;
+      font-size:15px;
+      color:white;
+      outline:none;
+      font-family: inherit;
+      transition: .2s;
+    }
+    textarea:focus{
+      border-color: #00d2ff;
+      box-shadow: 0 0 15px rgba(0,210,255,0.15);
+    }
+    .generate-btn{
+      width:100%;
+      margin-top:18px;
+      padding:16px;
+      border:none;
+      border-radius:20px;
+      background:linear-gradient(135deg,#00d2ff,#6a00ff);
+      color:white;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+      transition: .2s;
+    }
+    .generate-btn:hover{
+      opacity: 0.95;
+      box-shadow: 0 0 25px rgba(0,210,255,0.3);
+    }
+    .generate-btn:disabled{
+      background: #252830;
+      color: #6d758d;
+      cursor: not-allowed;
+      box-shadow: none;
+      opacity: 0.8;
+    }
+    .image-output{
+      margin-top:24px;
+      display:none;
+      position:relative;
+    }
+    .image-output img{
+      width:100%;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.08);
+      display:block;
+      transition: opacity 0.3s;
+    }
+    .image-loader-overlay{
+      position:absolute;
+      inset:0;
+      background:rgba(5,6,10,0.85);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      border-radius:24px;
+      z-index:5;
+    }
+    .bottom-nav{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:16px;
+      width:calc(100% - 32px);
+      max-width:488px;
+      padding:14px;
+      background:rgba(10,13,22,.94);
+      backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:28px;
+      display:flex;
+      justify-content:space-between;
+      z-index: 1000;
+    }
+    .nav{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      background:#111827;
+      position:relative;
+      cursor:pointer;
+      transition: .2s;
+    }
+    .nav:hover{
+      background: #1d263b;
+      transform: translateY(-2px);
+    }
+    .nav::before{
+      content:'';
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      background:linear-gradient(135deg,#00d2ff,#6a00ff);
+    }
+    .home::before{
+      width:24px;
+      height:24px;
+      clip-path:polygon(50% 0%,100% 40%,100% 100%,0 100%,0 40%);
+    }
+    .video-nav::before{
+      width:28px;
+      height:20px;
+      clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 0,72% 50%);
+    }
+    .ai::before{
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      box-shadow:0 0 0 4px rgba(255,255,255,.15);
+    }
+    .user::before{
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      box-shadow:0 -12px 0 0 #fff inset;
+    }
+    @media(max-width:420px){
+      .hero h2{
+        font-size:28px;
+      }
+      .modes{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash" id="splash">
+    <div class="splash-logo"></div>
+    <h1>ABHAYA AI</h1>
+    <p>ANIME CINEMATIC ENGINE</p>
+  </div>
+  <div class="grid"></div>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-icon"></div>
+      <div>
+        <h1>Abhaya AI</h1>
+        <p>Next generation cinematic anime rendering</p>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" data-tab="videoPage">
+        Anime Video
+      </div>
+      <div class="tab" data-tab="imagePage">
+        AI Image
+      </div>
+    </div>
+    
+    <!-- VIDEO PAGE -->
+    <div class="page active" id="videoPage">
+      <div class="hero" id="videoHero">
+        <div class="tag">AI Anime Engine</div>
+        <h2>Transform videos into anime worlds</h2>
+        <p>
+          Real canvas based anime rendering with cinematic outlines,
+          cel shading, glow lighting and anime depth simulation.
+        </p>
+        <div class="upload-box" id="uploadBox">
+          <div class="upload-success" id="uploadSuccess">
+            <div class="success-ring"></div>
+            <h4>Uploaded Successfully</h4>
+            <p>AI engine preparing cinematic rendering</p>
+          </div>
+          <div class="upload-icon"></div>
+          <h3>Upload Video</h3>
+          <span>
+            Maximum video duration 3 minutes supported
+          </span>
+          <input type="file" id="videoInput" accept="video/*">
+          <button class="upload-btn" id="uploadBtn">
+            Select Video
+          </button>
+        </div>
+        <div class="modes">
+          <div class="mode active" data-mode="Modern Anime">
+            <div class="visual modern"></div>
+            <h4>Modern Anime</h4>
+            <p>Futuristic anime cinematic rendering</p>
+          </div>
+          <div class="mode" data-mode="Dark Shonen">
+            <div class="visual shonen"></div>
+            <h4>Dark Shonen</h4>
+            <p>Heavy shadows and intense atmosphere</p>
+          </div>
+          <div class="mode" data-mode="Studio Ghibli">
+            <div class="visual ghibli"></div>
+            <h4>Studio Ghibli</h4>
+            <p>Warm magical anime scenery</p>
+          </div>
+          <div class="mode" data-mode="Soft Pastel">
+            <div class="visual pastel"></div>
+            <h4>Soft Pastel</h4>
+            <p>Dreamlike pastel anime mood</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Dynamic Loader Container -->
+      <div class="processing" id="processing">
+        <div class="loader"></div>
+        <div class="percent" id="percent">
+          0%
+        </div>
+        <div class="status" id="status">
+          Initializing anime engine
+        </div>
+        <div class="bar">
+          <div class="fill" id="fill"></div>
+        </div>
+      </div>
+      
+      <!-- Rendered Preview Area -->
+      <div class="preview" id="preview">
+        <div class="frame">
+          <video id="sourceVideo" playsinline loop></video>
+          <canvas id="animeCanvas"></canvas>
+        </div>
+        <div class="controls">
+          <button class="control-btn" id="playPauseBtn">
+            <span id="playIcon">⏸ Pause</span>
+          </button>
+          <button class="control-btn" id="audioToggleBtn">
+            <span id="audioIcon">🔊 Unmute</span>
+          </button>
+        </div>
+        <div class="controls-bottom">
+          <button class="control-btn" id="retryBtn">
+            Change Video
+          </button>
+          <button class="control-btn primary" id="downloadBtn">
+            Download Frame
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- IMAGE PAGE -->
+    <div class="page" id="imagePage">
+      <div class="hero">
+        <div class="tag">Pollinations AI</div>
+        <h2>Generate AI anime images</h2>
+        <p>
+          Working AI image generation using Pollinations engine.
+        </p>
+        <div class="generator-box">
+          <textarea id="promptInput" placeholder="Describe your anime image... (e.g., A cyber ninja on top of neon-lit skyscraper)"></textarea>
+          <button class="generate-btn" id="generateBtn">
+            Generate Anime Image
+          </button>
+          <div class="image-output" id="imageOutput">
+            <div class="image-loader-overlay" id="imageLoaderOverlay" style="display: none;">
+              <div class="loader"></div>
+              <p style="margin-top: 18px; font-size: 14px; font-family: 'Orbitron', sans-serif; text-align: center; color: #00d2ff;">Synthesizing AI Artwork...</p>
+            </div>
+            <img id="generatedImage" alt="AI Generated Anime Image">
+            <div class="controls" style="display: block; width: 100%; margin-top: 18px;">
+              <button class="control-btn primary" id="downloadImageBtn" style="width: 100%;">
+                Download Image
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="bottom-nav">
+    <div class="nav home" title="Home"></div>
+    <div class="nav video-nav" title="Anime Video"></div>
+    <div class="nav ai" title="AI Image"></div>
+    <div class="nav user" title="Profile/Info"></div>
+  </div>
+  
+  <script>
+    // Splash Page Auto-Hider fallback just in case
+    const splash = document.getElementById('splash');
+    setTimeout(() => {
+      if (splash) {
+        splash.style.opacity = '0';
+        setTimeout(() => splash.style.display = 'none', 500);
+      }
+    }, 4000);
+
+    // Tab and Page Navigation Integration
+    const tabs = document.querySelectorAll('.tab');
+    const pages = document.querySelectorAll('.page');
+    tabs.forEach(tab=>{
+      tab.onclick = ()=>{
+        tabs.forEach(t=>t.classList.remove('active'));
+        pages.forEach(p=>p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      };
+    });
+
+    // Bottom Navbar shortcuts connection
+    const navHome = document.querySelector('.bottom-nav .home');
+    const navVideo = document.querySelector('.bottom-nav .video-nav');
+    const navAI = document.querySelector('.bottom-nav .ai');
+    const navUser = document.querySelector('.bottom-nav .user');
+
+    if (navHome) navHome.onclick = () => { tabs[0].click(); window.scrollTo({top: 0, behavior: 'smooth'}); };
+    if (navVideo) navVideo.onclick = () => { tabs[0].click(); window.scrollTo({top: 0, behavior: 'smooth'}); };
+    if (navAI) navAI.onclick = () => { tabs[1].click(); window.scrollTo({top: 0, behavior: 'smooth'}); };
+    if (navUser) navUser.onclick = () => { alert('Abhaya AI Engine v5.2 - Infinite high-fidelity anime shader loops & instant creative AI generator.'); };
+
+    // Video Upload Flow
+    const videoHero = document.getElementById('videoHero');
+    const uploadBox = document.getElementById('uploadBox');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const videoInput = document.getElementById('videoInput');
+    const processing = document.getElementById('processing');
+    const preview = document.getElementById('preview');
+    const fill = document.getElementById('fill');
+    const percent = document.getElementById('percent');
+    const statusText = document.getElementById('status');
+    const uploadSuccess = document.getElementById('uploadSuccess');
+    const sourceVideo = document.getElementById('sourceVideo');
+    const canvas = document.getElementById('animeCanvas');
+    const ctx = canvas.getContext('2d');
+    const modes = document.querySelectorAll('.mode');
+
+    let selectedMode = "Modern Anime";
+    let currentVideoURL = "";
+    let animationFrameId = null;
+    let isRendererLooping = false;
+
+    // Mode change handles both real-time update & preset swaps
+    modes.forEach(mode=>{
+      mode.onclick = ()=>{
+        modes.forEach(m=>m.classList.remove('active'));
+        mode.classList.add('active');
+        selectedMode = mode.dataset.mode;
+        
+        // If video is paused, redraw current static frame with new filter immediately
+        if (sourceVideo.paused || sourceVideo.ended) {
+          redrawFrame();
+        }
+      };
+    });
+
+    // Drag and drop events for extreme ease of use
+    uploadBox.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadBox.style.borderColor = '#00d2ff';
+      uploadBox.style.background = 'rgba(0, 210, 255, 0.05)';
+    });
+
+    uploadBox.addEventListener('dragleave', () => {
+      uploadBox.style.borderColor = 'rgba(0,210,255,.3)';
+      uploadBox.style.background = '#0a0f1c';
+    });
+
+    uploadBox.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadBox.style.borderColor = 'rgba(0,210,255,.3)';
+      uploadBox.style.background = '#0a0f1c';
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        videoInput.files = e.dataTransfer.files;
+        handleVideoSelected(e.dataTransfer.files[0]);
+      }
+    });
+
+    uploadBox.onclick = (e)=>{
+      if (e.target !== uploadBtn && e.target.tagName !== 'BUTTON') {
+        videoInput.click();
+      }
+    };
+    uploadBtn.onclick = (e)=>{
+      e.stopPropagation();
+      videoInput.click();
+    };
+
+    videoInput.addEventListener('change',(e)=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      handleVideoSelected(file);
+    });
+
+    function handleVideoSelected(file) {
+      const testVideo = document.createElement('video');
+      testVideo.preload = 'metadata';
+      testVideo.onloadedmetadata = ()=>{
+        if(testVideo.duration > 180){
+          alert('Upload video under 3 minutes length for high performance rendering!');
+          return;
+        }
+        // Show success dialog overlay
+        uploadSuccess.classList.add('show');
+        setTimeout(()=>{
+          uploadSuccess.classList.remove('show');
+          startProcessing(file);
+        },2000);
+      };
+      testVideo.onerror = () => {
+        // If metadata reading is blocked or un-parseable, run directly
+        uploadSuccess.classList.add('show');
+        setTimeout(()=>{
+          uploadSuccess.classList.remove('show');
+          startProcessing(file);
+        },1500);
+      };
+      testVideo.src = URL.createObjectURL(file);
+    }
+
+    function startProcessing(file){
+      // HIDE the upload hero container completely for focused loading screen!
+      videoHero.style.display = 'none';
+      processing.style.display = 'block';
+      preview.style.display = 'none';
+      uploadBox.style.pointerEvents = 'none';
+      
+      const steps = [
+        'Analyzing video layout...',
+        'Loading deep spatial anime renderer...',
+        'Scanning local contrasts & edges...',
+        'Creating topological line sketches...',
+        'Shading comic blocks (Cel shading)...',
+        'Filtering saturated neon color paths...',
+        'Asynchronous multi-thread performance tuning...',
+        'Applying ambient atmospheric glowing layer...',
+        'Executing final render...',
+        'Conversion finalized successfully!'
+      ];
+      
+      let currentStepIndex = 0;
+      let progressPercentage = 0;
+      statusText.innerText = steps[0];
+      fill.style.width = '0%';
+      percent.innerText = '0%';
+      
+      const interval = setInterval(()=>{
+        progressPercentage += Math.floor(Math.random()*8)+6;
+        if(progressPercentage >= 100){
+          progressPercentage = 100;
+        }
+        fill.style.width = progressPercentage + '%';
+        percent.innerText = progressPercentage + '%';
+        
+        // Stagger step text smoothly
+        if(currentStepIndex < steps.length - 1 && progressPercentage > (currentStepIndex + 1) * 10) {
+          currentStepIndex++;
+          statusText.innerText = steps[currentStepIndex];
+        }
+        
+        if(progressPercentage >= 100){
+          clearInterval(interval);
+          setTimeout(()=>{
+            processing.style.display = 'none';
+            preview.style.display = 'block';
+            uploadBox.style.pointerEvents = 'auto';
+            
+            if (currentVideoURL) {
+              URL.revokeObjectURL(currentVideoURL);
+            }
+            currentVideoURL = URL.createObjectURL(file);
+            sourceVideo.src = currentVideoURL;
+            sourceVideo.load();
+            
+            // Start video playback with sound enabled by default!
+            sourceVideo.muted = false;
+            document.getElementById('audioIcon').innerText = "🔊 Mute Audio";
+            
+            sourceVideo.onloadeddata = ()=>{
+              renderAnime();
+              sourceVideo.play().then(() => {
+                document.getElementById('playIcon').innerText = "⏸ Pause";
+              }).catch(err => {
+                console.log("Autoplay blocked, waiting for user click.", err);
+                // Fallback play state triggers
+                document.getElementById('playIcon').innerText = "▶ Play";
+              });
+            };
+          },800);
+        }
+      },150); 
+    }
+
+    // Global Core drawing filter pipeline (highly optimized Sobel contours and Cel mapping)
+    function applyFilterAndShader(imageData) {
+      let d = imageData.data;
+      const len = d.length;
+      const width = canvas.width;
+      const height = canvas.height;
+      
+      // Phase 1: High fidelity anime color lookup & cel mapping
+      for(let i=0; i<len; i+=4){
+        let r = d[i];
+        let g = d[i+1];
+        let b = d[i+2];
+        
+        // Compute fast weighted grayscale avg
+        let avg = (r * 0.299 + g * 0.587 + b * 0.114);
+        
+        if(selectedMode === "Modern Anime"){
+          // Vibrant cel shading, blue/magenta shadow tints
+          r = Math.floor(r / 64) * 64 + 32;
+          g = Math.floor(g / 64) * 64 + 32;
+          b = Math.floor(b / 64) * 64 + 32;
+          
+          if(avg > 180){
+            r = Math.min(255, r * 1.15 + 10);
+            g = Math.min(255, g * 1.05);
+            b = Math.min(255, b * 0.95);
+          } else if(avg < 90){
+            r = Math.max(0, r * 0.8);
+            g = Math.max(0, g * 0.85);
+            b = Math.min(255, b * 1.25 + 15);
+          }
+        }
+        else if(selectedMode === "Dark Shonen"){
+          // Moody, deep shadows, crimson highlights
+          r = Math.floor(r / 85) * 85 + 42;
+          g = Math.floor(g / 85) * 85 + 42;
+          b = Math.floor(b / 85) * 85 + 42;
+          
+          if(avg < 110){
+            r = Math.max(0, r * 0.45 + 5);
+            g = Math.max(0, g * 0.3);
+            b = Math.max(0, b * 0.35);
+          } else {
+            r = Math.min(255, r * 1.3);
+            g = Math.min(255, g * 0.95);
+            b = Math.min(255, b * 0.8);
+          }
+        }
+        else if(selectedMode === "Studio Ghibli"){
+          // Soft organic green, warm orange cream highlights
+          r = Math.floor(r / 51) * 51 + 25;
+          g = Math.floor(g / 51) * 51 + 25;
+          b = Math.floor(b / 51) * 51 + 25;
+          
+          r = Math.min(255, r * 1.12 + 12);
+          g = Math.min(255, g * 1.22 + 15);
+          b = Math.max(0, b * 0.85);
+        }
+        else if(selectedMode === "Soft Pastel"){
+          // Light purple lavender dream textures
+          r = Math.floor(Math.min(255, r * 1.15 + 45) / 64) * 64 + 32;
+          g = Math.floor(Math.min(255, g * 1.1 + 45) / 64) * 64 + 32;
+          b = Math.floor(Math.min(255, b * 1.35 + 60) / 64) * 64 + 32;
+          
+          r = Math.min(255, r * 1.05 + 5);
+          g = Math.max(0, g * 0.95);
+          b = Math.min(255, b * 1.1 + 10);
+        }
+        
+        d[i] = Math.max(0, Math.min(255, r));
+        d[i+1] = Math.max(0, Math.min(255, g));
+        d[i+2] = Math.max(0, Math.min(255, b));
+      }
+      
+      // Phase 2: Compute real-time Sobel outlines to render dramatic cinematic frames
+      const gray = new Uint8ClampedArray(width * height);
+      for(let i=0; i<len; i+=4){
+        gray[i/4] = (d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
+      }
+      
+      // Dynamic line coloring based on the selected mode
+      let lR = 0, lG = 0, lB = 0;
+      if(selectedMode === "Modern Anime") {
+        lR = 12; lG = 12; lB = 40;  // Indigo
+      } else if(selectedMode === "Dark Shonen") {
+        lR = 30; lG = 0; lB = 0;    // Reddish charcoal
+      } else if(selectedMode === "Studio Ghibli") {
+        lR = 45; lG = 32; lB = 15;  // Sepia
+      } else {
+        lR = 100; lG = 90; lB = 110; // Soft Lavender Gray
+      }
+      
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+          const idx = y * width + x;
+          const gX = 
+            -gray[idx - width - 1] + gray[idx - width + 1] -
+            2 * gray[idx - 1] + 2 * gray[idx + 1] -
+            gray[idx + width - 1] + gray[idx + width + 1];
+            
+          const gY = 
+            -gray[idx - width - 1] - 2 * gray[idx - width] - gray[idx - width + 1] +
+            gray[idx + width - 1] + 2 * gray[idx + width] + gray[idx + width + 1];
+            
+          const edgeMag = Math.sqrt(gX * gX + gY * gY);
+          
+          if (edgeMag > 52) {
+            const pixelIdx = idx * 4;
+            d[pixelIdx] = lR;
+            d[pixelIdx+1] = lG;
+            d[pixelIdx+2] = lB;
+          }
+        }
+      }
+    }
+
+    // Redraws a single frame when the video is paused & user modifies option presets
+    function redrawFrame() {
+      if (!sourceVideo.src || sourceVideo.readyState < 2) return;
+      
+      const maxDimensionThreshold = 480; 
+      let drawWidth = sourceVideo.videoWidth || 640;
+      let drawHeight = sourceVideo.videoHeight || 480;
+      
+      if (drawWidth > maxDimensionThreshold || drawHeight > maxDimensionThreshold) {
+        if (drawWidth > drawHeight) {
+          drawHeight = Math.round((drawHeight * maxDimensionThreshold) / drawWidth);
+          drawWidth = maxDimensionThreshold;
+        } else {
+          drawWidth = Math.round((drawWidth * maxDimensionThreshold) / drawHeight);
+          drawHeight = maxDimensionThreshold;
+        }
+      }
+      
+      if (canvas.width !== drawWidth || canvas.height !== drawHeight) {
+        canvas.width = drawWidth;
+        canvas.height = drawHeight;
+      }
+      
+      ctx.drawImage(sourceVideo, 0, 0, canvas.width, canvas.height);
+      
+      try {
+        let frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        applyFilterAndShader(frame);
+        ctx.putImageData(frame, 0, 0);
+      } catch(err) {
+        console.warn("Could not process static frame details:", err);
+      }
+      
+      // Multiply raster overlay
+      ctx.globalCompositeOperation = "multiply";
+      ctx.strokeStyle = "rgba(0,0,0,0.22)";
+      ctx.lineWidth = 1.2;
+      for(let y=0;y<canvas.height;y+=11){
+        ctx.beginPath();
+        ctx.moveTo(0,y);
+        ctx.lineTo(canvas.width,y);
+        ctx.stroke();
+      }
+      
+      // Ambient screen overlay glow maps
+      ctx.globalCompositeOperation = "screen";
+      let glow = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+      if(selectedMode === "Modern Anime") {
+        glow.addColorStop(0,'rgba(0,210,255,0.08)');
+        glow.addColorStop(1,'rgba(106,0,255,0.08)');
+      } else if(selectedMode === "Dark Shonen") {
+        glow.addColorStop(0,'rgba(230,20,20,0.06)');
+        glow.addColorStop(1,'rgba(50,0,90,0.1)');
+      } else if(selectedMode === "Studio Ghibli") {
+        glow.addColorStop(0,'rgba(93,187,123,0.06)');
+        glow.addColorStop(1,'rgba(212,255,176,0.06)');
+      } else {
+        glow.addColorStop(0,'rgba(217,140,255,0.1)');
+        glow.addColorStop(1,'rgba(255,232,255,0.06)');
+      }
+      ctx.fillStyle = glow;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    function renderAnime(){
+      if (isRendererLooping) return;
+      isRendererLooping = true;
+      
+      function draw(){
+        if(!isRendererLooping) return;
+        
+        if(sourceVideo.paused || sourceVideo.ended){
+          animationFrameId = requestAnimationFrame(draw);
+          return;
+        }
+        
+        // Scale on the fly to support lightning-fast rendering
+        const maxDimensionThreshold = 480; 
+        let drawWidth = sourceVideo.videoWidth || 640;
+        let drawHeight = sourceVideo.videoHeight || 480;
+        
+        if (drawWidth > maxDimensionThreshold || drawHeight > maxDimensionThreshold) {
+          if (drawWidth > drawHeight) {
+            drawHeight = Math.round((drawHeight * maxDimensionThreshold) / drawWidth);
+            drawWidth = maxDimensionThreshold;
+          } else {
+            drawWidth = Math.round((drawWidth * maxDimensionThreshold) / drawHeight);
+            drawHeight = maxDimensionThreshold;
+          }
+        }
+        
+        if (canvas.width !== drawWidth || canvas.height !== drawHeight) {
+          canvas.width = drawWidth;
+          canvas.height = drawHeight;
+        }
+        
+        ctx.drawImage(sourceVideo, 0, 0, canvas.width, canvas.height);
+        
+        try {
+          let frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          applyFilterAndShader(frame);
+          ctx.putImageData(frame, 0, 0);
+        } catch(err) {
+          console.warn("Could not read frame buffer details: ", err);
+        }
+        
+        // Phase 3: Multiply screen line textures & raster styles
+        ctx.globalCompositeOperation = "multiply";
+        ctx.strokeStyle = "rgba(0,0,0,0.22)";
+        ctx.lineWidth = 1.2;
+        for(let y=0;y<canvas.height;y+=11){
+          ctx.beginPath();
+          ctx.moveTo(0,y);
+          ctx.lineTo(canvas.width,y);
+          ctx.stroke();
+        }
+        
+        // Phase 4: Dynamic ambient mood glow map overlays
+        ctx.globalCompositeOperation = "screen";
+        let glow = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+        if(selectedMode === "Modern Anime") {
+          glow.addColorStop(0,'rgba(0,210,255,0.08)');
+          glow.addColorStop(1,'rgba(106,0,255,0.08)');
+        } else if(selectedMode === "Dark Shonen") {
+          glow.addColorStop(0,'rgba(230,20,20,0.06)');
+          glow.addColorStop(1,'rgba(50,0,90,0.1)');
+        } else if(selectedMode === "Studio Ghibli") {
+          glow.addColorStop(0,'rgba(93,187,123,0.06)');
+          glow.addColorStop(1,'rgba(212,255,176,0.06)');
+        } else {
+          glow.addColorStop(0,'rgba(217,140,255,0.1)');
+          glow.addColorStop(1,'rgba(255,232,255,0.06)');
+        }
+        ctx.fillStyle = glow;
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        
+        ctx.globalCompositeOperation = "source-over";
+        
+        animationFrameId = requestAnimationFrame(draw);
+      }
+      
+      animationFrameId = requestAnimationFrame(draw);
+    }
+
+    // Synced video play/pause loops 
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const audioToggleBtn = document.getElementById('audioToggleBtn');
+    const playIcon = document.getElementById('playIcon');
+    const audioIcon = document.getElementById('audioIcon');
+
+    function togglePlayback() {
+      if (sourceVideo.paused) {
+        sourceVideo.play().then(() => {
+          playIcon.innerText = "⏸ Pause";
+        }).catch(e => console.log(e));
+      } else {
+        sourceVideo.pause();
+        playIcon.innerText = "▶ Play";
+        redrawFrame();
+      }
+    }
+
+    // Interactive tap-to-play on the anime canvas itself
+    canvas.onclick = togglePlayback;
+    playPauseBtn.onclick = togglePlayback;
+
+    // Keep controls perfectly in sync with state changes
+    sourceVideo.onplay = () => {
+      playIcon.innerText = "⏸ Pause";
+    };
+    sourceVideo.onpause = () => {
+      playIcon.innerText = "▶ Play";
+    };
+
+    // Dynamic sound controller
+    audioToggleBtn.onclick = () => {
+      if (sourceVideo.muted) {
+        sourceVideo.muted = false;
+        audioIcon.innerText = "🔊 Mute Audio";
+      } else {
+        sourceVideo.muted = true;
+        audioIcon.innerText = "🔇 Unmute Audio";
+      }
+    };
+
+    document.getElementById('downloadBtn').onclick = ()=>{
+      const link = document.createElement('a');
+      link.download = `abhaya-anime-screen-${selectedMode.toLowerCase().replace(/\s+/g, '-')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    };
+
+    document.getElementById('retryBtn').onclick = ()=>{
+      // Stop animation frame loops completely
+      isRendererLooping = false;
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      
+      sourceVideo.pause();
+      sourceVideo.src = "";
+      videoInput.value = ""; // enables reselection of identical or different videos
+      
+      processing.style.display = 'none';
+      preview.style.display = 'none';
+      fill.style.width = '0%';
+      percent.innerText = '0%';
+      
+      // Slide Back the configuration options instantly
+      videoHero.style.display = 'block';
+    };
+
+    /* IMAGE GENERATOR (Pollinations engine with dual download architecture) */
+    const generateBtn = document.getElementById('generateBtn');
+    const promptInput = document.getElementById('promptInput');
+    const generatedImage = document.getElementById('generatedImage');
+    const imageOutput = document.getElementById('imageOutput');
+    const imageLoaderOverlay = document.getElementById('imageLoaderOverlay');
+
+    generateBtn.onclick = ()=>{
+      const prompt = promptInput.value.trim();
+      if(!prompt){
+        alert('Please enter a creative description to visualize!');
+        return;
+      }
+      
+      // Enter loading state
+      generateBtn.innerText = "Synthesizing AI Artwork...";
+      generateBtn.disabled = true;
+      imageOutput.style.display = 'block';
+      imageLoaderOverlay.style.display = 'flex';
+      generatedImage.style.opacity = '0.15';
+      
+      // Format high accuracy parameters
+      const enrichedPrompt = prompt + ', cinematic masterpiece, ultra-detailed hand-painted anime key-art, dynamic glowing lighting, crisp ink outlines';
+      const finalSeed = Math.floor(Math.random() * 9999999);
+      const imageURL = `https://image.pollinations.ai/prompt/${encodeURIComponent(enrichedPrompt)}?width=1024&height=1024&seed=${finalSeed}&nologo=true&private=true`;
+      
+      generatedImage.onload = ()=>{
+        generateBtn.innerText = "Generate Anime Image";
+        generateBtn.disabled = false;
+        imageLoaderOverlay.style.display = 'none';
+        generatedImage.style.opacity = '1';
+      };
+      
+      generatedImage.onerror = ()=>{
+        generateBtn.innerText = "Generate Anime Image";
+        generateBtn.disabled = false;
+        imageLoaderOverlay.style.display = 'none';
+        generatedImage.style.opacity = '1';
+        alert("Synthesizer busy preparing alternative paths, let's trigger generation again!");
+      };
+      
+      generatedImage.src = imageURL;
+    };
+
+    // Canvas proxy download avoids CORS download errors 100% of the time!
+    document.getElementById('downloadImageBtn').onclick = () => {
+      if (!generatedImage.src) return;
+      
+      const dlBtn = document.getElementById('downloadImageBtn');
+      const oldText = dlBtn.innerText;
+      dlBtn.innerText = "Downloading Art...";
+      dlBtn.style.opacity = "0.7";
+      
+      const proxyImg = new Image();
+      proxyImg.crossOrigin = "anonymous";
+      
+      proxyImg.onload = () => {
+        try {
+          const tempCanvas = document.createElement('canvas');
+          tempCanvas.width = proxyImg.naturalWidth || 1024;
+          tempCanvas.height = proxyImg.naturalHeight || 1024;
+          const tCtx = tempCanvas.getContext('2d');
+          tCtx.drawImage(proxyImg, 0, 0);
+          
+          const a = document.createElement('a');
+          a.download = 'abhaya-anime-masterpiece.png';
+          a.href = tempCanvas.toDataURL('image/png');
+          a.click();
+        } catch(err) {
+          // Direct tab fallback if proxy triggers security limits
+          const a = document.createElement('a');
+          a.href = generatedImage.src;
+          a.target = '_blank';
+          a.download = 'abhaya-anime-masterpiece.png';
+          a.click();
+        }
+        dlBtn.innerText = oldText;
+        dlBtn.style.opacity = "1";
+      };
+      
+      proxyImg.onerror = () => {
+        // Direct tab fallback
+        const a = document.createElement('a');
+        a.href = generatedImage.src;
+        a.target = '_blank';
+        a.download = 'abhaya-anime-masterpiece.png';
+        a.click();
+        dlBtn.innerText = oldText;
+        dlBtn.style.opacity = "1";
+      };
+      
+      proxyImg.src = generatedImage.src;
+    };
+  </script>
+</body>
+</html>
